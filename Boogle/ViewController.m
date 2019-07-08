@@ -192,10 +192,11 @@
   [timer fire];
 }
 
-- (void)displayTime:(int)elapsed {
-  int timeLeft  = (kBoogleGameMinutes*60) - elapsed;
-  int minutes   = timeLeft/60.0;
-  int seconds   = (((timeLeft/60.0)-minutes)*60);
+- (void)displayTime:(float)elapsed {
+  float timeLeft  = (kBoogleGameMinutes*60.0) - elapsed;
+  int minutes     = floor(timeLeft/60.0);
+  int seconds     = floor(((timeLeft/60.0)-minutes)*60);
+  NSLog(@"%d %d %f %f", minutes, seconds, timeLeft, elapsed);
   self.timerLabel.text = [NSString stringWithFormat:@"%d:%02d",minutes,seconds];
 }
 
