@@ -177,23 +177,26 @@
     [timer invalidate];
     timer = nil;
   }
-  self.timerLabel.text = @"3:00";
+  [self displayTime:0];
   NSTimeInterval start = CFAbsoluteTimeGetCurrent();
   timer = [NSTimer scheduledTimerWithTimeInterval:0.1 repeats:YES block:(void (^)(NSTimer *timer))^{
     NSTimeInterval current = CFAbsoluteTimeGetCurrent();
     float elapsed = current-start;
-    int timeLeft = (kBoogleGameMinutes*60) - elapsed;
-    int minutes  = floor((timeLeft/60));
-    int seconds  = (((timeLeft/60.0)-minutes)*60);
-    if (timeLeft <= 0) {
-      minutes = 0;
-      seconds = 0;
+    if (elapsed >= kBoogleGameMinutes*60) {
+      elapsed = kBoogleGameMinutes*60;
       [self->timer invalidate];
       self.finishView.hidden = NO;
     }
-    self->_timerLabel.text = [NSString stringWithFormat:@"%d:%02d",minutes,seconds];
+    [self displayTime:elapsed];
   }];
   [timer fire];
+}
+
+- (void)displayTime:(int)elapsed {
+  int timeLeft  = (kBoogleGameMinutes*60) - elapsed;
+  int minutes   = timeLeft/60.0;
+  int seconds   = (((timeLeft/60.0)-minutes)*60);
+  self.timerLabel.text = [NSString stringWithFormat:@"%d:%02d",minutes,seconds];
 }
 
 - (NSArray*)dies {
