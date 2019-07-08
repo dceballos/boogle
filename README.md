@@ -1,3 +1,3 @@
 # Boogle
 
-## Quick take on boggle for airplane play
+## Quick take on boggle for travel play
