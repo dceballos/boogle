@@ -39,8 +39,8 @@
   NSLayoutConstraint *startLabelYConstraint;
 }
 
-@property (nonatomic) UIView *gridView;
-@property (nonatomic) UIView *finishView;
+@property (nonatomic) UIView  *gridView;
+@property (nonatomic) UIView  *finishView;
 @property (nonatomic) UILabel *timerLabel;
 @property (nonatomic) UILabel *titleLabel;
 @property (nonatomic) UILabel *startLabel;
@@ -431,12 +431,12 @@
 - (NSLayoutConstraint*)titleLabelYConstraint {
   if (titleLabelYConstraint == nil) {
     titleLabelYConstraint = [NSLayoutConstraint constraintWithItem:self.titleLabel
-                                                         attribute:NSLayoutAttributeTop
+                                                         attribute:NSLayoutAttributeBottom
                                                          relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.view
+                                                            toItem:self.gridView
                                                          attribute:NSLayoutAttributeTop
                                                         multiplier:1
-                                                          constant:100];
+                                                          constant:-20];
   }
   return titleLabelYConstraint;
 }
