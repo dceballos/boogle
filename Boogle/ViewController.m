@@ -146,6 +146,12 @@
   for (int i=0;i<(kBoogleRows*kBoogleCols);i++) {
     sessionDice[i] = [self dies][i][arc4random()%kBoogleCols];
   }
+  NSUInteger count = [sessionDice count];
+  for (NSUInteger i = 0; i < count - 1; ++i) {
+    NSUInteger nElements = count - i;
+    NSUInteger n = (arc4random_uniform(nElements) + i;
+    [sessionDice exchangeObjectAtIndex:i withObjectAtIndex:n];
+  }
   return nil;
 }
 
