@@ -44,6 +44,10 @@
   NSLayoutConstraint *startLabelWidthConstraint;
   NSLayoutConstraint *startLabelXConstraint;
   NSLayoutConstraint *startLabelYConstraint;
+  NSLayoutConstraint *wordCountLabelHeightConstraint;
+  NSLayoutConstraint *wordCountLabelWidthConstraint;
+  NSLayoutConstraint *wordCountLabelXConstraint;
+  NSLayoutConstraint *wordCountLabelYConstraint;
 }
 
 @property (nonatomic) BoogleGridView *gridView;
@@ -51,6 +55,9 @@
 @property (nonatomic) UILabel        *timerLabel;
 @property (nonatomic) UILabel        *titleLabel;
 @property (nonatomic) UILabel        *startLabel;
+@property (nonatomic) UILabel        *wordCountLabel;
+@property (nonatomic) UILabel        *pointsLabel;
+@property (nonatomic) UILabel        *messagesLabel;
 
 @end
 
@@ -71,10 +78,11 @@
   lineLayers = @[].mutableCopy;
   self.view.backgroundColor = [UIColor colorWithWhite:1 alpha:0.9];
   [self initAndSetGridView];
-  [self initAndSetFinishView];
-  [self initAndSetTimerLabel];
   [self initAndSetTitleLabel];
+  [self initAndSetFinishView];
   [self initAndSetStartLabel];
+  [self initAndSetTimerLabel];
+  [self initAndSetWordCountLabel];
 }
 
 - (void)initAndSetTitleLabel {
@@ -102,6 +110,19 @@
     [self timerLabelWidthConstraint],[self timerLabelHeightConstraint],
     [self timerLabelYConstraint], [self timerLabelXConstraint]
   ]];
+}
+
+- (void)initAndSetWordCountLabel {
+  self.wordCountLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+  self.wordCountLabel.translatesAutoresizingMaskIntoConstraints = NO;
+  self.wordCountLabel.backgroundColor = [UIColor clearColor];
+  self.wordCountLabel.textAlignment = NSTextAlignmentCenter;
+  self.wordCountLabel.font = [UIFont fontWithName:@"Avenir-Light" size:22];
+  [self.view addSubview:self.wordCountLabel];
+  [self.view addConstraints:@[
+  [self wordCountLabelWidthConstraint],[self wordCountLabelHeightConstraint],
+                              [self wordCountLabelYConstraint], [self wordCountLabelXConstraint]
+                              ]];
 }
 
 - (void)initAndSetStartLabel {
@@ -144,6 +165,7 @@
 
 - (id)rollAndDisplay {
   words = [NSSet setWithArray:@[]].mutableCopy;
+  self.wordCountLabel.text = @"";
   self.finishView.hidden = YES;
   [self roll];
   [self display];
@@ -172,6 +194,7 @@
 }
 
 - (void)display {
+  [self clearLines];
   [self clear];
   NSUInteger len = [self cellLen];
   for (int r=0;r<(kBoogleRows);r++) {
@@ -373,8 +396,8 @@
                                                             relatedBy:NSLayoutRelationEqual
                                                                toItem:self.timerLabel
                                                             attribute:NSLayoutAttributeHeight
-                                                           multiplier:0
-                                                             constant:100];
+                                                           multiplier:1
+                                                             constant:0];
   }
   return timerLabelHeightConstraint;
 }
@@ -400,7 +423,7 @@
                                                           toItem:self.gridView
                                                        attribute:NSLayoutAttributeBottom
                                                       multiplier:1
-                                                        constant:10];
+                                                        constant:30];
   }
   return timerLabelYConstraint;
 }
@@ -425,8 +448,8 @@
                                                               relatedBy:NSLayoutRelationEqual
                                                                  toItem:self.titleLabel
                                                               attribute:NSLayoutAttributeHeight
-                                                             multiplier:0
-                                                               constant:100];
+                                                             multiplier:1
+                                                               constant:0];
   }
   return titleLabelHeightConstraint;
 }
@@ -452,7 +475,7 @@
                                                             toItem:self.gridView
                                                          attribute:NSLayoutAttributeTop
                                                         multiplier:1
-                                                          constant:-20];
+                                                          constant:-100];
   }
   return titleLabelYConstraint;
 }
@@ -507,6 +530,58 @@
                                                           constant:0];
   }
   return startLabelYConstraint;
+}
+
+- (NSLayoutConstraint*)wordCountLabelWidthConstraint {
+  if (wordCountLabelWidthConstraint == nil) {
+    wordCountLabelWidthConstraint = [NSLayoutConstraint constraintWithItem:self.wordCountLabel
+                                                             attribute:NSLayoutAttributeWidth
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self.wordCountLabel
+                                                             attribute:NSLayoutAttributeWidth
+                                                            multiplier:0
+                                                              constant:[self cellLen]*kBoogleCols];
+  }
+  return wordCountLabelWidthConstraint;
+}
+
+- (NSLayoutConstraint*)wordCountLabelHeightConstraint {
+  if (wordCountLabelHeightConstraint == nil) {
+    wordCountLabelHeightConstraint = [NSLayoutConstraint constraintWithItem:self.wordCountLabel
+                                                              attribute:NSLayoutAttributeHeight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.wordCountLabel
+                                                              attribute:NSLayoutAttributeHeight
+                                                             multiplier:1
+                                                               constant:0];
+  }
+  return wordCountLabelHeightConstraint;
+}
+
+- (NSLayoutConstraint*)wordCountLabelXConstraint {
+  if (wordCountLabelXConstraint == nil) {
+    wordCountLabelXConstraint = [NSLayoutConstraint constraintWithItem:self.wordCountLabel
+                                                         attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.view
+                                                         attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1
+                                                          constant:0];
+  }
+  return wordCountLabelXConstraint;
+}
+
+- (NSLayoutConstraint*)wordCountLabelYConstraint {
+  if (wordCountLabelYConstraint == nil) {
+    wordCountLabelYConstraint = [NSLayoutConstraint constraintWithItem:self.wordCountLabel
+                                                         attribute:NSLayoutAttributeTop
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.timerLabel
+                                                         attribute:NSLayoutAttributeBottom
+                                                        multiplier:1
+                                                          constant:40];
+  }
+  return wordCountLabelYConstraint;
 }
 
 // Grid View Helper Methods
@@ -564,6 +639,7 @@
   }else{
     NSLog(@"%@ is not a word", word);
   }
+  self.wordCountLabel.text = [NSString stringWithFormat:@"%ld words", [words count]];
   previousView = nil;
   currentView  = nil;
 }
