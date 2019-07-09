@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "BoogleGridView.h"
 #import "BoogleDiceView.h"
 
 #define kBoogleRows 4
@@ -14,8 +15,14 @@
 #define kBoogleGameMinutes 3
 
 @interface ViewController () {
+  NSMutableSet       *words;
+  NSMutableString    *word;
+  UIBezierPath       *wordPath;
+  BoogleDiceView     *previousView;
+  BoogleDiceView     *currentView;
   NSTimer            *timer;
   NSArray            *dies;
+  NSMutableArray     *lineLayers;
   NSMutableArray     *sessionDice;
   NSLayoutConstraint *gridViewHeightConstraint;
   NSLayoutConstraint *gridViewWidthConstraint;
@@ -39,11 +46,11 @@
   NSLayoutConstraint *startLabelYConstraint;
 }
 
-@property (nonatomic) UIView  *gridView;
-@property (nonatomic) UIView  *finishView;
-@property (nonatomic) UILabel *timerLabel;
-@property (nonatomic) UILabel *titleLabel;
-@property (nonatomic) UILabel *startLabel;
+@property (nonatomic) BoogleGridView *gridView;
+@property (nonatomic) UIView         *finishView;
+@property (nonatomic) UILabel        *timerLabel;
+@property (nonatomic) UILabel        *titleLabel;
+@property (nonatomic) UILabel        *startLabel;
 
 @end
 
@@ -61,6 +68,7 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  lineLayers = @[].mutableCopy;
   self.view.backgroundColor = [UIColor colorWithWhite:1 alpha:0.9];
   [self initAndSetGridView];
   [self initAndSetFinishView];
@@ -112,7 +120,8 @@
 }
 
 - (void)initAndSetGridView {
-  self.gridView = [[UIView alloc] initWithFrame:CGRectZero];
+  self.gridView = [[BoogleGridView alloc] initWithFrame:CGRectZero];
+  self.gridView.delegate = self;
   self.gridView.translatesAutoresizingMaskIntoConstraints = NO;
   self.gridView.backgroundColor = [UIColor clearColor];
   [self.view addSubview:self.gridView];
@@ -134,6 +143,7 @@
 }
 
 - (id)rollAndDisplay {
+  words = [NSSet setWithArray:@[]].mutableCopy;
   self.finishView.hidden = YES;
   [self roll];
   [self display];
@@ -202,7 +212,7 @@
   float timeLeft  = (kBoogleGameMinutes*60.0) - elapsed;
   int minutes     = floor(timeLeft/60.0);
   int seconds     = floor(((timeLeft/60.0)-minutes)*60);
-  NSLog(@"%d %d %f %f", minutes, seconds, timeLeft, elapsed);
+  //NSLog(@"%d %d %f %f", minutes, seconds, timeLeft, elapsed);
   self.timerLabel.text = [NSString stringWithFormat:@"%d:%02d",minutes,seconds];
 }
 
@@ -499,4 +509,82 @@
   return startLabelYConstraint;
 }
 
+// Grid View Helper Methods
+- (BoogleDiceView*)diceViewForGridViewLocation:(CGPoint)location {
+  BoogleDiceView *view = (BoogleDiceView*)[self.gridView hitTest:(CGPoint)location withEvent:nil];
+  if (view) {
+    CGPoint localPoint = [self.gridView convertPoint:location toView:view];
+    if (CGRectContainsPoint(CGRectInset(view.bounds, 15, 15), localPoint)) {
+      return view;
+    }
+  }
+  return nil;
+}
+
+- (void)drawLine:(UIBezierPath*)path {
+  //design path in layer
+  CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+  shapeLayer.path = [path CGPath];
+  shapeLayer.strokeColor = [[UIColor redColor] CGColor];
+  shapeLayer.lineWidth = 5.0;
+  [self.gridView.layer addSublayer:shapeLayer];
+  [lineLayers addObject:shapeLayer];
+}
+
+- (void)clearLines {
+  for (int i=0;i<[lineLayers count];i++) {
+    CALayer *layer = lineLayers[i];
+    [layer removeFromSuperlayer];
+  }
+  [lineLayers removeAllObjects];
+}
+
+// Grid View Delegates
+- (void)gridViewTouchesBegan:(CGPoint)touchLocation {
+  BoogleDiceView* view = [self diceViewForGridViewLocation:touchLocation];
+  if (view) {
+    currentView = view;
+    word        = view.letter.text.mutableCopy;
+    wordPath    = [UIBezierPath bezierPath];
+    [wordPath moveToPoint:view.center];
+  }
+}
+
+- (void)gridViewTouchesEnded:(CGPoint)touchLocation {
+  [self clearLines];
+  if ([word length] < 3) {
+    NSLog(@"%@ too short!", word);
+  }else if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:word]) {
+    if (![words containsObject:word]) {
+      [words addObject:word];
+      NSLog(@"%@ added! %ld points", word, [word length]);
+    }else{
+      NSLog(@"%@ exists!", word);
+    }
+  }else{
+    NSLog(@"%@ is not a word", word);
+  }
+  previousView = nil;
+  currentView  = nil;
+}
+
+- (void)gridViewTouchesMoved:(CGPoint)touchLocation {
+  BoogleDiceView* view = [self diceViewForGridViewLocation:touchLocation];
+  if (view) {
+    if (view != currentView) {
+      previousView = currentView;
+      currentView = view;
+      [word appendString:view.letter.text];
+      [wordPath addLineToPoint:view.center];
+      [self drawLine:wordPath];
+      wordPath    = [UIBezierPath bezierPath];
+      [wordPath moveToPoint:view.center];
+      NSLog(@"%@", word);
+    }
+  }
+}
+- (void)gridViewTouchesCancelled:(CGPoint)touchLocation {
+  previousView = nil;
+  currentView  = nil;
+}
 @end

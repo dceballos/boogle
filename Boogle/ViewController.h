@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BoogleGridView.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <BoogleGridViewDelegate>
 
 
 @end
