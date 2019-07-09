@@ -470,12 +470,12 @@
 - (NSLayoutConstraint*)titleLabelYConstraint {
   if (titleLabelYConstraint == nil) {
     titleLabelYConstraint = [NSLayoutConstraint constraintWithItem:self.titleLabel
-                                                         attribute:NSLayoutAttributeBottom
+                                                         attribute:NSLayoutAttributeTop
                                                          relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.gridView
+                                                            toItem:self.view
                                                          attribute:NSLayoutAttributeTop
                                                         multiplier:1
-                                                          constant:-100];
+                                                          constant:50];
   }
   return titleLabelYConstraint;
 }
@@ -579,7 +579,7 @@
                                                             toItem:self.timerLabel
                                                          attribute:NSLayoutAttributeBottom
                                                         multiplier:1
-                                                          constant:40];
+                                                          constant:20];
   }
   return wordCountLabelYConstraint;
 }
