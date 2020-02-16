@@ -634,9 +634,15 @@
 - (NSSet*)dictionary {
   if (dictionary == nil) {
     dictionary = [NSSet set].mutableCopy;
-    NSString *allTheWords = [NSString stringWithContentsOfFile: @"/usr/share/dict/words"
-                                                      encoding: NSUTF8StringEncoding
-                                                         error: nil];
+    NSString *path;
+    NSBundle *thisBundle = [NSBundle bundleForClass:[self class]];
+    NSString *allTheWords = @"";
+    if ((path = [thisBundle pathForResource:@"words" ofType:@"txt"])) {
+        allTheWords = [NSString stringWithContentsOfFile: path
+        encoding: NSUTF8StringEncoding
+           error: nil];
+    }
+     
     for (NSString *line in [allTheWords componentsSeparatedByString:@"\n"]) {
       [dictionary addObject:[line lowercaseString]];
     }
