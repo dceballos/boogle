@@ -13,6 +13,7 @@
 #define kBoogleRows 4
 #define kBoogleCols 4
 #define kBoogleGameMinutes 3
+#define kMacMargin 300
 
 @interface ViewController () {
   NSMutableSet       *words;
@@ -74,6 +75,18 @@
   }
 }
 
+- (void)handleTapGesture:(UITapGestureRecognizer *)sender {
+  if (sender.state == UIGestureRecognizerStateRecognized) {
+    [self rollAndDisplay];
+  }
+}
+
+- (void)subscribeTapGesture {
+  UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+  tapGesture.numberOfTapsRequired = 2;
+  [self.view addGestureRecognizer:tapGesture];
+}
+
 - (void)viewDidLoad {
   [super viewDidLoad];
   lineLayers = @[].mutableCopy;
@@ -85,6 +98,7 @@
   [self initAndSetStartLabel];
   [self initAndSetTimerLabel];
   [self initAndSetWordCountLabel];
+  [self subscribeTapGesture];
 }
 
 - (void)initAndSetTitleLabel {
@@ -138,7 +152,11 @@
   self.startLabel.textAlignment = NSTextAlignmentCenter;
   self.startLabel.font = [UIFont fontWithName:@"Avenir-LightOblique" size:28];
   self.startLabel.textColor =  [UIColor colorWithWhite:1 alpha:0.9];
+#if TARGET_OS_UIKITFORMAC
+  self.startLabel.text = @"Double click to start!";
+#else
   self.startLabel.text = @"Shake to start!";
+#endif
   [self.finishView addSubview:self.startLabel];
   [self.finishView addConstraints:@[
     [self startLabelWidthConstraint],[self startLabelHeightConstraint],
@@ -270,7 +288,11 @@
 }
 
 - (NSInteger)cellLen {
-  return self.view.frame.size.width/kBoogleCols;
+  #if TARGET_OS_UIKITFORMAC
+  return ((self.view.frame.size.width-kMacMargin)/kBoogleCols);
+  #else
+  return (self.view.frame.size.width/kBoogleCols)
+  #endif
 }
 
 - (NSInteger)diceIndexForRow:(NSUInteger)row col:(NSUInteger)col {

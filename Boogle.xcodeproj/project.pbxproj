@@ -14,6 +14,7 @@
 		65669E5B22D1DB7B00DD230E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65669E5A22D1DB7B00DD230E /* Assets.xcassets */; };
 		65669E5E22D1DB7B00DD230E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65669E5C22D1DB7B00DD230E /* LaunchScreen.storyboard */; };
 		65669E6122D1DB7B00DD230E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 65669E6022D1DB7B00DD230E /* main.m */; };
+		659A6AA923F9DBB1003D0DA4 /* words.txt in Resources */ = {isa = PBXBuildFile; fileRef = 659A6AA823F9DBB1003D0DA4 /* words.txt */; };
 		65F5C29822D2157B0092353E /* BoogleDiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F5C29722D2157B0092353E /* BoogleDiceView.m */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +33,7 @@
 		65669E5D22D1DB7B00DD230E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		65669E5F22D1DB7B00DD230E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65669E6022D1DB7B00DD230E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		659A6AA823F9DBB1003D0DA4 /* words.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = words.txt; path = Boogle/Resources/words.txt; sourceTree = "<group>"; };
 		65F5C29622D2157B0092353E /* BoogleDiceView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BoogleDiceView.h; path = Views/BoogleDiceView.h; sourceTree = "<group>"; };
 		65F5C29722D2157B0092353E /* BoogleDiceView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BoogleDiceView.m; path = Views/BoogleDiceView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -50,6 +52,7 @@
 		65669E4522D1DB7A00DD230E = {
 			isa = PBXGroup;
 			children = (
+				659A6AA823F9DBB1003D0DA4 /* words.txt */,
 				65669E5022D1DB7A00DD230E /* Boogle */,
 				65669E4F22D1DB7A00DD230E /* Products */,
 			);
@@ -143,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65669E5E22D1DB7B00DD230E /* LaunchScreen.storyboard in Resources */,
+				659A6AA923F9DBB1003D0DA4 /* words.txt in Resources */,
 				65669E5B22D1DB7B00DD230E /* Assets.xcassets in Resources */,
 				65669E5922D1DB7A00DD230E /* Main.storyboard in Resources */,
 			);
@@ -302,8 +306,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Boogle/Boogle.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 97E485EJMW;
 				INFOPLIST_FILE = Boogle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -312,9 +319,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = fm.cactus.boogle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = boogle;
-				SUPPORTS_MACCATALYST = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SUPPORTS_MACCATALYST = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -323,9 +331,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Boogle/Boogle.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 97E485EJMW;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Boogle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -333,9 +344,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = fm.cactus.boogle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = boogle;
-				SUPPORTS_MACCATALYST = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SUPPORTS_MACCATALYST = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
