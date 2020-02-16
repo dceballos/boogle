@@ -24,6 +24,7 @@
   NSArray            *dies;
   NSMutableArray     *lineLayers;
   NSMutableArray     *sessionDice;
+  NSMutableSet       *dictionary;
   NSLayoutConstraint *gridViewHeightConstraint;
   NSLayoutConstraint *gridViewWidthConstraint;
   NSLayoutConstraint *gridViewXConstraint;
@@ -77,6 +78,7 @@
   [super viewDidLoad];
   lineLayers = @[].mutableCopy;
   self.view.backgroundColor = [UIColor colorWithWhite:1 alpha:0.9];
+  [self dictionary];
   [self initAndSetGridView];
   [self initAndSetTitleLabel];
   [self initAndSetFinishView];
@@ -91,7 +93,8 @@
   self.titleLabel.backgroundColor = [UIColor clearColor];
   self.titleLabel.textAlignment = NSTextAlignmentCenter;
   self.titleLabel.font = [UIFont fontWithName:@"Baskerville-BoldItalic" size:34];
-  self.titleLabel.text = @"Boogle";
+  self.titleLabel.text = @"Booogle";
+  self.titleLabel.textColor = [UIColor blackColor];
   [self.view addSubview:self.titleLabel];
   [self.view addConstraints:@[
     [self titleLabelWidthConstraint],[self titleLabelHeightConstraint],
@@ -105,6 +108,7 @@
   self.timerLabel.backgroundColor = [UIColor clearColor];
   self.timerLabel.textAlignment = NSTextAlignmentCenter;
   self.timerLabel.font = [UIFont fontWithName:@"Avenir-Light" size:28];
+  self.timerLabel.textColor = [UIColor blackColor];
   [self.view addSubview:self.timerLabel];
   [self.view addConstraints:@[
     [self timerLabelWidthConstraint],[self timerLabelHeightConstraint],
@@ -117,6 +121,7 @@
   self.wordCountLabel.translatesAutoresizingMaskIntoConstraints = NO;
   self.wordCountLabel.backgroundColor = [UIColor clearColor];
   self.wordCountLabel.textAlignment = NSTextAlignmentCenter;
+  self.wordCountLabel.textColor = [UIColor blackColor];
   self.wordCountLabel.font = [UIFont fontWithName:@"Avenir-Light" size:22];
   [self.view addSubview:self.wordCountLabel];
   [self.view addConstraints:@[
@@ -132,6 +137,7 @@
   self.startLabel.textColor = [UIColor whiteColor];
   self.startLabel.textAlignment = NSTextAlignmentCenter;
   self.startLabel.font = [UIFont fontWithName:@"Avenir-LightOblique" size:28];
+  self.startLabel.textColor =  [UIColor colorWithWhite:1 alpha:0.9];
   self.startLabel.text = @"Shake to start!";
   [self.finishView addSubview:self.startLabel];
   [self.finishView addConstraints:@[
@@ -625,11 +631,24 @@
   }
 }
 
+- (NSSet*)dictionary {
+  if (dictionary == nil) {
+    dictionary = [NSSet set].mutableCopy;
+    NSString *allTheWords = [NSString stringWithContentsOfFile: @"/usr/share/dict/words"
+                                                      encoding: NSUTF8StringEncoding
+                                                         error: nil];
+    for (NSString *line in [allTheWords componentsSeparatedByString:@"\n"]) {
+      [dictionary addObject:[line lowercaseString]];
+    }
+  }
+  return dictionary;
+}
+
 - (void)gridViewTouchesEnded:(CGPoint)touchLocation {
   [self clearLines];
   if ([word length] < 3) {
     NSLog(@"%@ too short!", word);
-  }else if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:word]) {
+  }else if ([[self dictionary] containsObject:[word lowercaseString]]) {
     if (![words containsObject:word]) {
       [words addObject:word];
       NSLog(@"%@ added! %ld points", word, [word length]);
