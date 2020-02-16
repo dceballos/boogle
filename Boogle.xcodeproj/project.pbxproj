@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		652A22D022D49C4100483EF2 /* BoogleGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 652A22CF22D49C4100483EF2 /* BoogleGridView.m */; };
-		654A50E423F9D02C0085ABF7 /* words.txt in Resources */ = {isa = PBXBuildFile; fileRef = 654A50E323F9D02C0085ABF7 /* words.txt */; };
 		65669E5322D1DB7A00DD230E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 65669E5222D1DB7A00DD230E /* AppDelegate.m */; };
 		65669E5622D1DB7A00DD230E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65669E5522D1DB7A00DD230E /* ViewController.m */; };
 		65669E5922D1DB7A00DD230E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65669E5722D1DB7A00DD230E /* Main.storyboard */; };
@@ -22,7 +21,7 @@
 		652A22CE22D49C4100483EF2 /* BoogleGridView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BoogleGridView.h; path = Views/BoogleGridView.h; sourceTree = "<group>"; };
 		652A22CF22D49C4100483EF2 /* BoogleGridView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BoogleGridView.m; path = Views/BoogleGridView.m; sourceTree = "<group>"; };
 		654A50E123F9CF2D0085ABF7 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
-		654A50E323F9D02C0085ABF7 /* words.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = words.txt; sourceTree = "<group>"; };
+		654A50E523F9D1600085ABF7 /* Boogle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Boogle.entitlements; sourceTree = "<group>"; };
 		65669E4E22D1DB7A00DD230E /* Boogle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Boogle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65669E5122D1DB7A00DD230E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		65669E5222D1DB7A00DD230E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -51,7 +50,6 @@
 		65669E4522D1DB7A00DD230E = {
 			isa = PBXGroup;
 			children = (
-				654A50E323F9D02C0085ABF7 /* words.txt */,
 				65669E5022D1DB7A00DD230E /* Boogle */,
 				65669E4F22D1DB7A00DD230E /* Products */,
 			);
@@ -68,6 +66,7 @@
 		65669E5022D1DB7A00DD230E /* Boogle */ = {
 			isa = PBXGroup;
 			children = (
+				654A50E523F9D1600085ABF7 /* Boogle.entitlements */,
 				654A50E123F9CF2D0085ABF7 /* Resources */,
 				65669E5122D1DB7A00DD230E /* AppDelegate.h */,
 				65669E5222D1DB7A00DD230E /* AppDelegate.m */,
@@ -144,7 +143,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				65669E5E22D1DB7B00DD230E /* LaunchScreen.storyboard in Resources */,
-				654A50E423F9D02C0085ABF7 /* words.txt in Resources */,
 				65669E5B22D1DB7B00DD230E /* Assets.xcassets in Resources */,
 				65669E5922D1DB7A00DD230E /* Main.storyboard in Resources */,
 			);
@@ -303,16 +301,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2LZJ3536RU;
+				CODE_SIGN_ENTITLEMENTS = Boogle/Boogle.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 97E485EJMW;
 				INFOPLIST_FILE = Boogle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = fm.boogle.boogle;
+				PRODUCT_BUNDLE_IDENTIFIER = fm.cactus.boogle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE_SPECIFIER = boogle;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -320,16 +322,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2LZJ3536RU;
+				CODE_SIGN_ENTITLEMENTS = Boogle/Boogle.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 97E485EJMW;
 				INFOPLIST_FILE = Boogle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = fm.boogle.boogle;
+				PRODUCT_BUNDLE_IDENTIFIER = fm.cactus.boogle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE_SPECIFIER = boogle;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
